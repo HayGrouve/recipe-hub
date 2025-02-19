@@ -1,3 +1,4 @@
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -36,12 +37,12 @@ export default function Home() {
           RecipeHub
         </Link>
         <div className="space-x-4">
-          <Link href="/login" className="text-white hover:text-gray-300">
-            Login
-          </Link>
-          <Link href="/signup" className="text-white hover:text-gray-300">
-            Signup
-          </Link>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </nav>
     </div>
