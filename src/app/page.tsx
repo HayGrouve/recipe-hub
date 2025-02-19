@@ -1,37 +1,49 @@
+import Image from "next/image";
 import Link from "next/link";
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+    <div className="relative flex h-screen items-center justify-center overflow-hidden">
+      <Image
+        src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="Delicious food background"
+        layout="fill"
+        objectFit="cover"
+        quality={100}
+        className="absolute z-0"
+      />
+      <div className="absolute inset-0 z-10 bg-black opacity-50"></div>
+
+      {/* Content */}
+      <div className="relative z-20 px-4 text-center text-white sm:px-6 lg:px-8">
+        <h1 className="mb-4 text-4xl font-bold sm:text-5xl md:text-6xl">
+          Discover Culinary Delights
         </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
+        <p className="mb-8 text-xl sm:text-2xl md:text-3xl">
+          Explore a world of flavors with our handcrafted recipes
+        </p>
+        <Link
+          href="/recipes"
+          className="rounded-full bg-white px-8 py-3 text-lg font-bold text-black transition duration-300 hover:bg-opacity-90"
+        >
+          Start Cooking
+        </Link>
+      </div>
+
+      {/* Navigation */}
+      <nav className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between p-4">
+        <Link href="/" className="text-2xl font-bold text-white">
+          RecipeHub
+        </Link>
+        <div className="space-x-4">
+          <Link href="/login" className="text-white hover:text-gray-300">
+            Login
           </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
+          <Link href="/signup" className="text-white hover:text-gray-300">
+            Signup
           </Link>
         </div>
-      </div>
-    </main>
+      </nav>
+    </div>
   );
 }
