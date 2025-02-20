@@ -8,7 +8,6 @@ export default function RecipesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  // Filter recipes based on search term, selected categories, and selected authors
   const filteredRecipes = mockedRecipes.filter((recipe) => {
     const matchesSearch = recipe.title
       .toLowerCase()
@@ -42,7 +41,7 @@ export default function RecipesPage() {
       {/* Main Section */}
       <main className="w-3/4 p-4" style={{ minHeight: "calc(100dvh - 165px)" }}>
         {filteredRecipes.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredRecipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}

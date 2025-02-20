@@ -24,14 +24,19 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{
+        scale: 1.02,
+        boxShadow: "0px 8px 30px rgba(0, 0, 0, 0.2)",
+      }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="overflow-hidden rounded-xl"
     >
-      <Card className="overflow-hidden">
+      <Card className="h-full max-w-sm overflow-hidden">
         {/* Recipe Image */}
         <div className="relative h-40 w-full">
           <Image
             src={recipe.imageUrl ?? "/recipe.jpg"}
-            alt={recipe.title}
+            alt={recipe.title || "Recipe Image"}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -50,22 +55,27 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         <CardContent>
           <div className="flex flex-wrap gap-4 text-sm text-gray-600">
             <div>
-              <span className="font-medium">Prep Time:</span> {recipe.prepTime}{" "}
-              mins
+              <span className="font-medium">Prep Time:</span>
+              {recipe.prepTime ?? "N/A"} mins
             </div>
             <div>
-              <span className="font-medium">Cook Time:</span> {recipe.cookTime}{" "}
-              mins
+              <span className="font-medium">Cook Time:</span>
+              {recipe.cookTime ?? "N/A"} mins
             </div>
             <div>
-              <span className="font-medium">Servings:</span> {recipe.servings}
+              <span className="font-medium">Servings:</span>
+              {recipe.servings ?? "N/A"}
             </div>
           </div>
         </CardContent>
 
         {/* Footer with Button */}
         <CardFooter>
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            aria-label={`View details for ${recipe.title}`}
+          >
             View Recipe
           </Button>
         </CardFooter>
