@@ -7,7 +7,6 @@ import { mockedRecipes } from "@/lib/mockedData";
 export default function RecipesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
 
   // Filter recipes based on search term, selected categories, and selected authors
   const filteredRecipes = mockedRecipes.filter((recipe) => {
@@ -21,10 +20,8 @@ export default function RecipesPage() {
         recipe.categories.some((category: string) =>
           selectedCategories.includes(category),
         ));
-    const matchesAuthor =
-      selectedAuthors.length === 0 || selectedAuthors.includes(recipe.userId);
 
-    return matchesSearch && matchesCategory && matchesAuthor;
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -36,13 +33,8 @@ export default function RecipesPage() {
           setSearchTerm={setSearchTerm}
           selectedCategories={selectedCategories}
           setSelectedCategories={setSelectedCategories}
-          selectedAuthors={selectedAuthors}
-          setSelectedAuthors={setSelectedAuthors}
           categories={Array.from(
             new Set(mockedRecipes.flatMap((recipe) => recipe.categories || [])),
-          )}
-          authors={Array.from(
-            new Set(mockedRecipes.map((recipe) => recipe.userId)),
           )}
         />
       </aside>

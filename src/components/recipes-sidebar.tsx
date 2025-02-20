@@ -3,10 +3,7 @@ interface RecipesSidebarProps {
   setSearchTerm: (term: string) => void;
   selectedCategories: string[];
   setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
-  selectedAuthors: string[];
-  setSelectedAuthors: React.Dispatch<React.SetStateAction<string[]>>;
   categories: string[]; // Now a simple array of category names
-  authors: string[]; // Now a simple array of author names
 }
 
 export function RecipesSidebar({
@@ -14,10 +11,7 @@ export function RecipesSidebar({
   setSearchTerm,
   selectedCategories,
   setSelectedCategories,
-  selectedAuthors,
-  setSelectedAuthors,
   categories,
-  authors,
 }: RecipesSidebarProps) {
   const handleCategoryChange = (
     category: string,
@@ -28,16 +22,9 @@ export function RecipesSidebar({
     );
   };
 
-  const handleAuthorChange = (author: string, checked: boolean | undefined) => {
-    setSelectedAuthors((prev) =>
-      checked ? [...prev, author] : prev.filter((a) => a !== author),
-    );
-  };
-
   const clearFilters = () => {
     setSearchTerm("");
     setSelectedCategories([]);
-    setSelectedAuthors([]);
   };
 
   return (
@@ -71,24 +58,6 @@ export function RecipesSidebar({
                 }
               />
               <label htmlFor={category}>{category}</label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Authors */}
-      <div>
-        <h3 className="mb-2 text-lg font-semibold">Authors</h3>
-        <div className="space-y-2">
-          {authors.map((author) => (
-            <div key={author} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id={author}
-                checked={selectedAuthors.includes(author)}
-                onChange={(e) => handleAuthorChange(author, e.target.checked)}
-              />
-              <label htmlFor={author}>{author}</label>
             </div>
           ))}
         </div>
