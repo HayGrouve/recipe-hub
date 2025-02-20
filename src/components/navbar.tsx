@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
+import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const { isSignedIn } = useUser();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,7 +29,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav ref={navRef} className="bg-white px-4 py-3 shadow-md">
+    <nav ref={navRef} className="bg-background px-4 py-3 shadow-md">
       <div className="flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -40,30 +40,40 @@ export function Navbar() {
             height={32}
             className="h-8 w-8 transition-transform duration-300 ease-in-out hover:scale-110"
           />
-          <span className="text-lg font-semibold text-gray-800">RecipeHub</span>
+          <span className="text-lg font-semibold text-foreground">
+            RecipeHub
+          </span>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden items-center space-x-4 sm:flex">
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          {isSignedIn ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            <>
+              <SignInButton mode="modal">
+                <Button variant="ghost">Sign In</Button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button>Sign Up</Button>
+              </SignUpButton>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="transition-transform duration-300 ease-in-out hover:scale-110 sm:hidden"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="sm:hidden"
           onClick={toggleMenu}
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6 text-gray-800" />
+            <X className="h-6 w-6" />
           ) : (
-            <Menu className="h-6 w-6 text-gray-800" />
+            <Menu className="h-6 w-6" />
           )}
-        </button>
+        </Button>
       </div>
 
       {/* Mobile Menu */}
@@ -72,13 +82,21 @@ export function Navbar() {
           isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="flex flex-col items-center justify-center space-y-4 py-4">
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+        <div className="flex flex-col items-end space-y-4 py-4">
+          {isSignedIn ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            <>
+              <SignInButton mode="modal">
+                <Button variant="ghost" className="w-full">
+                  Sign In
+                </Button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button className="w-full">Sign Up</Button>
+              </SignUpButton>
+            </>
+          )}
         </div>
       </div>
     </nav>

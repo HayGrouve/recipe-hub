@@ -40,7 +40,7 @@ export default function RecipesPage() {
       </aside>
 
       {/* Main Section */}
-      <main className="w-3/4 p-4">
+      <main className="w-3/4 p-4" style={{ minHeight: "calc(100dvh - 165px)" }}>
         {filteredRecipes.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredRecipes.map((recipe) => (

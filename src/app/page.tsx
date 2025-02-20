@@ -1,4 +1,3 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -31,20 +30,18 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Navigation */}
-      <nav className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between p-4">
-        <Link href="/" className="text-2xl font-bold text-white">
+      <div className="absolute left-0 right-0 top-0 z-30 flex items-center justify-between p-4">
+        <div className="flex items-center gap-2 text-2xl font-bold text-white">
+          <Image
+            src="/logo.svg"
+            alt="Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8 transition-transform duration-300 ease-in-out hover:scale-110"
+          />{" "}
           RecipeHub
-        </Link>
-        <div className="space-x-4">
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
         </div>
-      </nav>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,9 @@
-import { Search, Filter, XCircle } from "lucide-react"; // Import icons
+import type React from "react";
+import { Search, Filter, XCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 interface RecipesSidebarProps {
   searchTerm: string;
@@ -15,10 +20,7 @@ export function RecipesSidebar({
   setSelectedCategories,
   categories,
 }: RecipesSidebarProps) {
-  const handleCategoryChange = (
-    category: string,
-    checked: boolean | undefined,
-  ) => {
+  const handleCategoryChange = (category: string, checked: boolean) => {
     setSelectedCategories((prev) =>
       checked ? [...prev, category] : prev.filter((c) => c !== category),
     );
@@ -32,59 +34,51 @@ export function RecipesSidebar({
   return (
     <div className="space-y-6">
       {/* Search */}
-      <div>
-        <h3 className="mb-2 flex items-center space-x-2 text-lg font-semibold">
-          <Search className="h-5 w-5 text-gray-600" />
+      <div className="space-y-2">
+        <h3 className="flex items-center space-x-2 text-lg font-semibold">
+          <Search className="h-5 w-5" />
           <span>Search Recipes</span>
         </h3>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-md border py-2 pl-8 pr-4"
-          />
-        </div>
+        <Input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
       {/* Categories */}
-      <div>
-        <h3 className="mb-2 flex items-center space-x-2 text-lg font-semibold">
-          <Filter className="h-5 w-5 text-gray-600" />
+      <div className="space-y-2">
+        <h3 className="flex items-center space-x-2 text-lg font-semibold">
+          <Filter className="h-5 w-5" />
           <span>Categories</span>
         </h3>
         <div className="space-y-2">
           {categories.map((category) => (
             <div key={category} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
+              <Checkbox
                 id={category}
                 checked={selectedCategories.includes(category)}
-                onChange={(e) =>
-                  handleCategoryChange(category, e.target.checked)
+                onCheckedChange={(checked) =>
+                  handleCategoryChange(category, checked as boolean)
                 }
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
-              <label
+              <Label
                 htmlFor={category}
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {category}
-              </label>
+              </Label>
             </div>
           ))}
         </div>
       </div>
 
       {/* Clear Filters */}
-      <button
-        onClick={clearFilters}
-        className="flex w-full items-center justify-center space-x-2 rounded-md border py-2 text-gray-700 hover:bg-gray-100"
-      >
-        <XCircle className="h-5 w-5 text-gray-600" />
-        <span>Clear All Filters</span>
-      </button>
+      <Button onClick={clearFilters} variant="outline" className="w-full">
+        <XCircle className="mr-2 h-4 w-4" />
+        Clear All Filters
+      </Button>
     </div>
   );
 }
