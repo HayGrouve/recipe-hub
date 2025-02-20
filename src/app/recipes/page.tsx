@@ -1,61 +1,64 @@
 "use client";
-
-import { useState, useEffect } from "react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarInset,
-} from "@/components/ui/sidebar";
+import { useState } from "react";
 import { RecipesSidebar } from "@/components/recipes-sidebar";
-import { RecipeGrid } from "@/components/recipe-grid";
-import { recipes as allRecipes } from "@/lib/mockedData";
+import { RecipeCard } from "@/components/recipe-card";
+import { mockedRecipes } from "@/lib/mockedData";
 
 export default function RecipesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
-  const [filteredRecipes, setFilteredRecipes] = useState(allRecipes);
 
-  useEffect(() => {
-    const filtered = allRecipes.filter((recipe) => {
-      const matchesSearch =
-        recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        recipe.author.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory =
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(recipe.category);
-      const matchesAuthor =
-        selectedAuthors.length === 0 || selectedAuthors.includes(recipe.author);
+  // Filter recipes based on search term, selected categories, and selected authors
+  const filteredRecipes = mockedRecipes.filter((recipe) => {
+    const matchesSearch = recipe.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategories.length === 0 ||
+      (recipe.categories &&
+        Array.isArray(recipe.categories) &&
+        recipe.categories.some((category: string) =>
+          selectedCategories.includes(category),
+        ));
+    const matchesAuthor =
+      selectedAuthors.length === 0 || selectedAuthors.includes(recipe.userId);
 
-      return matchesSearch && matchesCategory && matchesAuthor;
-    });
-    setFilteredRecipes(filtered);
-  }, [searchTerm, selectedCategories, selectedAuthors]);
+    return matchesSearch && matchesCategory && matchesAuthor;
+  });
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar className="w-64 border-r border-gray-200">
-        <SidebarHeader className="flex h-[60px] flex-shrink-0 items-center justify-center border-b">
-          <h2 className="text-xl font-semibold text-gray-800">Filters</h2>
-        </SidebarHeader>
-        <SidebarContent>
-          <RecipesSidebar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            selectedAuthors={selectedAuthors}
-            setSelectedAuthors={setSelectedAuthors}
-          />
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset className="flex-grow overflow-auto">
-        <main className="mx-auto w-full p-6">
-          <h1 className="mb-6 text-3xl font-bold text-gray-800">Recipes</h1>
-          <RecipeGrid recipes={filteredRecipes} />
-        </main>
-      </SidebarInset>
+    <div className="flex">
+      {/* Sidebar */}
+      <aside className="w-1/4 border-r p-4">
+        <RecipesSidebar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+          selectedAuthors={selectedAuthors}
+          setSelectedAuthors={setSelectedAuthors}
+          categories={Array.from(
+            new Set(mockedRecipes.flatMap((recipe) => recipe.categories || [])),
+          )}
+          authors={Array.from(
+            new Set(mockedRecipes.map((recipe) => recipe.userId)),
+          )}
+        />
+      </aside>
+
+      {/* Main Section */}
+      <main className="w-3/4 p-4">
+        {filteredRecipes.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredRecipes.map((recipe) => (
+              <RecipeCard key={recipe.id} recipe={recipe} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500">No recipes found.</p>
+        )}
+      </main>
     </div>
   );
 }

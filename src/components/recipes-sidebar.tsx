@@ -1,25 +1,12 @@
-"use client";
-
-import type { Dispatch, SetStateAction } from "react";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-} from "@/components/ui/sidebar";
-import { categories, authors } from "@/lib/mockedData";
-import { Button } from "@/components/ui/button";
-
 interface RecipesSidebarProps {
   searchTerm: string;
-  setSearchTerm: Dispatch<SetStateAction<string>>;
+  setSearchTerm: (term: string) => void;
   selectedCategories: string[];
-  setSelectedCategories: Dispatch<SetStateAction<string[]>>;
+  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
   selectedAuthors: string[];
-  setSelectedAuthors: Dispatch<SetStateAction<string[]>>;
+  setSelectedAuthors: React.Dispatch<React.SetStateAction<string[]>>;
+  categories: string[]; // Now a simple array of category names
+  authors: string[]; // Now a simple array of author names
 }
 
 export function RecipesSidebar({
@@ -29,20 +16,21 @@ export function RecipesSidebar({
   setSelectedCategories,
   selectedAuthors,
   setSelectedAuthors,
+  categories,
+  authors,
 }: RecipesSidebarProps) {
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (
+    category: string,
+    checked: boolean | undefined,
+  ) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
+      checked ? [...prev, category] : prev.filter((c) => c !== category),
     );
   };
 
-  const handleAuthorChange = (author: string) => {
+  const handleAuthorChange = (author: string, checked: boolean | undefined) => {
     setSelectedAuthors((prev) =>
-      prev.includes(author)
-        ? prev.filter((a) => a !== author)
-        : [...prev, author],
+      checked ? [...prev, author] : prev.filter((a) => a !== author),
     );
   };
 
@@ -53,79 +41,66 @@ export function RecipesSidebar({
   };
 
   return (
-    <div className="space-y-6 p-4">
-      <SidebarGroup>
-        <SidebarGroupLabel className="mb-2 text-lg font-semibold">
-          Search Recipes
-        </SidebarGroupLabel>
-        <SidebarGroupContent>
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-white pl-8"
-            />
-          </div>
-        </SidebarGroupContent>
-      </SidebarGroup>
+    <div className="space-y-6">
+      {/* Search */}
+      <div>
+        <h3 className="mb-2 text-lg font-semibold">Search Recipes</h3>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-md border py-2 pl-8 pr-4"
+          />
+        </div>
+      </div>
 
-      <SidebarGroup>
-        <SidebarGroupLabel className="mb-2 text-lg font-semibold">
-          Categories
-        </SidebarGroupLabel>
-        <SidebarGroupContent>
-          <div className="space-y-2">
-            {categories.map((category) => (
-              <div key={category} className="flex items-center space-x-2">
-                <Checkbox
-                  id={category}
-                  className="border-gray-300"
-                  checked={selectedCategories.includes(category)}
-                  onCheckedChange={() => handleCategoryChange(category)}
-                />
-                <Label
-                  htmlFor={category}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {category}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </SidebarGroupContent>
-      </SidebarGroup>
+      {/* Categories */}
+      <div>
+        <h3 className="mb-2 text-lg font-semibold">Categories</h3>
+        <div className="space-y-2">
+          {categories.map((category) => (
+            <div key={category} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id={category}
+                checked={selectedCategories.includes(category)}
+                onChange={(e) =>
+                  handleCategoryChange(category, e.target.checked)
+                }
+              />
+              <label htmlFor={category}>{category}</label>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <SidebarGroup>
-        <SidebarGroupLabel className="mb-2 text-lg font-semibold">
-          Authors
-        </SidebarGroupLabel>
-        <SidebarGroupContent>
-          <div className="space-y-2">
-            {authors.map((author) => (
-              <div key={author} className="flex items-center space-x-2">
-                <Checkbox
-                  id={author}
-                  className="border-gray-300"
-                  checked={selectedAuthors.includes(author)}
-                  onCheckedChange={() => handleAuthorChange(author)}
-                />
-                <Label
-                  htmlFor={author}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {author}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </SidebarGroupContent>
-      </SidebarGroup>
+      {/* Authors */}
+      <div>
+        <h3 className="mb-2 text-lg font-semibold">Authors</h3>
+        <div className="space-y-2">
+          {authors.map((author) => (
+            <div key={author} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id={author}
+                checked={selectedAuthors.includes(author)}
+                onChange={(e) => handleAuthorChange(author, e.target.checked)}
+              />
+              <label htmlFor={author}>{author}</label>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      <Button onClick={clearFilters} variant="outline" className="w-full">
+      {/* Clear Filters */}
+      <button
+        onClick={clearFilters}
+        className="w-full rounded-md border py-2 text-gray-700 hover:bg-gray-100"
+      >
         Clear All Filters
-      </Button>
+      </button>
     </div>
   );
 }
