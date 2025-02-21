@@ -29,7 +29,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         boxShadow: "0px 8px 30px rgba(0, 0, 0, 0.2)",
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="overflow-hidden rounded-xl"
+      className="max-w-sm overflow-hidden rounded-xl"
     >
       <Card className="h-full max-w-sm overflow-hidden">
         {/* Recipe Image */}

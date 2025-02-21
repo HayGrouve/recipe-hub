@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,6 +60,7 @@ export function Navbar() {
               </SignUpButton>
             </>
           )}
+          <ThemeToggle />
         </div>
 
         {/* Mobile Menu Button */}
@@ -97,6 +99,7 @@ export function Navbar() {
               </SignUpButton>
             </>
           )}
+          <ThemeToggle />
         </div>
       </div>
     </nav>
