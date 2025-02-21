@@ -1,8 +1,7 @@
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/lib/theme-provider";
+import { Providers } from "@/components/providers";
 
 export const viewport = {
   width: "device-width",
@@ -20,12 +19,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
-      <ThemeProvider>
-        <html lang="en" className={`${GeistSans.variable}`}>
-          <body>{children}</body>
-        </html>
-      </ThemeProvider>
-    </ClerkProvider>
+    <Providers>
+      <html lang="en" className={`${GeistSans.variable}`}>
+        <body>{children}</body>
+      </html>
+    </Providers>
   );
 }

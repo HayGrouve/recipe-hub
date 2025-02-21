@@ -52,7 +52,7 @@ export function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden items-center space-x-4 sm:flex">
           {isSignedIn ? (
-            <UserButton afterSignOutUrl="/" />
+            <UserButton />
           ) : (
             <>
               <SignInButton mode="modal">
@@ -89,7 +89,7 @@ export function Navbar() {
       >
         <div className="flex flex-col items-end space-y-4 py-4">
           {isSignedIn ? (
-            <UserButton afterSignOutUrl="/" />
+            <UserButton />
           ) : (
             <>
               <SignInButton mode="modal">
