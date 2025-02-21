@@ -26,7 +26,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
       exit={{ opacity: 0, scale: 0.9 }}
       whileHover={{
         scale: 1.02,
-        boxShadow: "0px 8px 30px rgba(0, 0, 0, 0.2)",
+        boxShadow: "var(--card-hover-shadow)",
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className="max-w-sm overflow-hidden rounded-xl"
@@ -53,7 +53,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         </CardHeader>
 
         <CardContent>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
             <div>
               <span className="font-medium">Prep Time:</span>
               {recipe.prepTime ?? "N/A"} mins

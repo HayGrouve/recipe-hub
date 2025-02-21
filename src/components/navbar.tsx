@@ -30,7 +30,10 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav ref={navRef} className="bg-background px-4 py-3 shadow-md">
+    <nav
+      ref={navRef}
+      className="bg-background px-4 py-3 shadow-md dark:shadow-gray-800"
+    >
       <div className="flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
