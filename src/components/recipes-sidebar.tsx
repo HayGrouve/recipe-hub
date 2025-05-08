@@ -11,6 +11,7 @@ interface RecipesSidebarProps {
   selectedCategories: string[];
   setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
   categories: string[];
+  toggleSidebarButton?: React.ReactNode;
 }
 
 export function RecipesSidebar({
@@ -19,6 +20,7 @@ export function RecipesSidebar({
   selectedCategories,
   setSelectedCategories,
   categories,
+  toggleSidebarButton,
 }: RecipesSidebarProps) {
   const handleCategoryChange = (category: string, checked: boolean) => {
     setSelectedCategories((prev) =>
@@ -38,6 +40,9 @@ export function RecipesSidebar({
         <h3 className="flex items-center space-x-2 text-lg font-semibold">
           <Search className="h-5 w-5" />
           <span>Search Recipes</span>
+          {toggleSidebarButton && (
+            <span className="ml-2">{toggleSidebarButton}</span>
+          )}
         </h3>
         <Input
           type="text"
