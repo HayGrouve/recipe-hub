@@ -79,18 +79,187 @@ function TiptapEditor({
   );
 }
 
-// Fixed category list
-const CATEGORY_OPTIONS = [
-  "Italian",
-  "Indian",
-  "Vegetarian",
-  "American",
-  "Dessert",
-  "Pizza",
-  "Breakfast",
-  "Vegan",
-  "Gluten-Free",
-  "Quick & Easy",
+export interface RecipeCategory {
+  value: string;
+  label: string;
+  group: string;
+}
+
+export const recipeCategories: RecipeCategory[] = [
+  // By Meal Type
+  { value: "breakfast", label: "Breakfast", group: "Meal Type" },
+  { value: "brunch", label: "Brunch", group: "Meal Type" },
+  { value: "lunch", label: "Lunch", group: "Meal Type" },
+  { value: "dinner", label: "Dinner", group: "Meal Type" },
+  {
+    value: "appetizers-starters",
+    label: "Appetizers & Starters",
+    group: "Meal Type",
+  },
+  { value: "snacks", label: "Snacks", group: "Meal Type" },
+  { value: "desserts", label: "Desserts", group: "Meal Type" },
+  {
+    value: "drinks-beverages",
+    label: "Drinks & Beverages",
+    group: "Meal Type",
+  },
+  { value: "soups", label: "Soups", group: "Meal Type" },
+  { value: "salads", label: "Salads", group: "Meal Type" },
+  { value: "side-dishes", label: "Side Dishes", group: "Meal Type" },
+
+  // By Main Ingredient
+  { value: "chicken", label: "Chicken", group: "Main Ingredient" },
+  { value: "beef", label: "Beef", group: "Main Ingredient" },
+  { value: "pork", label: "Pork", group: "Main Ingredient" },
+  { value: "lamb", label: "Lamb", group: "Main Ingredient" },
+  { value: "seafood", label: "Seafood", group: "Main Ingredient" },
+  { value: "fish", label: "Fish", group: "Main Ingredient" }, // Sub of Seafood
+  { value: "shrimp", label: "Shrimp", group: "Main Ingredient" }, // Sub of Seafood
+  {
+    value: "pasta-noodles",
+    label: "Pasta & Noodles",
+    group: "Main Ingredient",
+  },
+  { value: "rice", label: "Rice", group: "Main Ingredient" },
+  { value: "eggs", label: "Eggs", group: "Main Ingredient" },
+  { value: "vegetarian", label: "Vegetarian", group: "Main Ingredient" },
+  { value: "vegan", label: "Vegan", group: "Main Ingredient" },
+  {
+    value: "tofu-tempeh",
+    label: "Tofu & Tempeh",
+    group: "Main Ingredient",
+  },
+  {
+    value: "beans-legumes",
+    label: "Beans & Legumes",
+    group: "Main Ingredient",
+  },
+
+  // By Cuisine / Region
+  { value: "american", label: "American", group: "Cuisine / Region" },
+  { value: "italian", label: "Italian", group: "Cuisine / Region" },
+  { value: "mexican", label: "Mexican", group: "Cuisine / Region" },
+  { value: "chinese", label: "Chinese", group: "Cuisine / Region" },
+  { value: "indian", label: "Indian", group: "Cuisine / Region" },
+  { value: "japanese", label: "Japanese", group: "Cuisine / Region" },
+  { value: "thai", label: "Thai", group: "Cuisine / Region" },
+  { value: "vietnamese", label: "Vietnamese", group: "Cuisine / Region" },
+  { value: "korean", label: "Korean", group: "Cuisine / Region" },
+  { value: "french", label: "French", group: "Cuisine / Region" },
+  {
+    value: "mediterranean",
+    label: "Mediterranean",
+    group: "Cuisine / Region",
+  },
+  {
+    value: "middle-eastern",
+    label: "Middle Eastern",
+    group: "Cuisine / Region",
+  },
+  { value: "greek", label: "Greek", group: "Cuisine / Region" },
+  { value: "spanish", label: "Spanish", group: "Cuisine / Region" },
+  { value: "caribbean", label: "Caribbean", group: "Cuisine / Region" },
+  { value: "african", label: "African", group: "Cuisine / Region" },
+
+  // By Dietary Preference / Restriction
+  {
+    value: "gluten-free",
+    label: "Gluten-Free",
+    group: "Dietary Preference",
+  },
+  {
+    value: "dairy-free",
+    label: "Dairy-Free",
+    group: "Dietary Preference",
+  },
+  { value: "keto", label: "Keto", group: "Dietary Preference" },
+  { value: "paleo", label: "Paleo", group: "Dietary Preference" },
+  { value: "low-carb", label: "Low-Carb", group: "Dietary Preference" },
+  { value: "low-fat", label: "Low-Fat", group: "Dietary Preference" },
+  {
+    value: "high-protein",
+    label: "High-Protein",
+    group: "Dietary Preference",
+  },
+  { value: "nut-free", label: "Nut-Free", group: "Dietary Preference" },
+  {
+    value: "sugar-free",
+    label: "Sugar-Free",
+    group: "Dietary Preference",
+  },
+  { value: "whole30", label: "Whole30", group: "Dietary Preference" },
+  { value: "healthy", label: "Healthy", group: "Dietary Preference" },
+
+  // By Cooking Method
+  { value: "baking", label: "Baking", group: "Cooking Method" },
+  { value: "grilling-bbq", label: "Grilling & BBQ", group: "Cooking Method" },
+  { value: "roasting", label: "Roasting", group: "Cooking Method" },
+  { value: "sautéing", label: "Sautéing", group: "Cooking Method" },
+  { value: "stir-frying", label: "Stir-Frying", group: "Cooking Method" },
+  {
+    value: "slow-cooker",
+    label: "Slow Cooker / Crockpot",
+    group: "Cooking Method",
+  },
+  {
+    value: "instant-pot",
+    label: "Instant Pot / Pressure Cooker",
+    group: "Cooking Method",
+  },
+  { value: "air-fryer", label: "Air Fryer", group: "Cooking Method" },
+  { value: "no-bake", label: "No-Bake", group: "Cooking Method" },
+  {
+    value: "one-pot-meals",
+    label: "One-Pot / One-Pan Meals",
+    group: "Cooking Method",
+  },
+  { value: "microwave", label: "Microwave", group: "Cooking Method" },
+
+  // By Occasion / Season / Theme
+  {
+    value: "quick-easy",
+    label: "Quick & Easy",
+    group: "Occasion / Theme",
+  },
+  {
+    value: "30-minute-meals",
+    label: "30-Minute Meals",
+    group: "Occasion / Theme",
+  },
+  {
+    value: "budget-friendly",
+    label: "Budget-Friendly",
+    group: "Occasion / Theme",
+  },
+  {
+    value: "kid-friendly",
+    label: "Kid-Friendly",
+    group: "Occasion / Theme",
+  },
+  { value: "comfort-food", label: "Comfort Food", group: "Occasion / Theme" },
+  { value: "holiday", label: "Holiday", group: "Occasion / Theme" },
+  {
+    value: "christmas-recipes",
+    label: "Christmas",
+    group: "Occasion / Theme",
+  },
+  {
+    value: "thanksgiving-recipes",
+    label: "Thanksgiving",
+    group: "Occasion / Theme",
+  },
+  { value: "easter-recipes", label: "Easter", group: "Occasion / Theme" },
+  { value: "summer-recipes", label: "Summer", group: "Occasion / Theme" },
+  { value: "winter-recipes", label: "Winter", group: "Occasion / Theme" },
+  { value: "fall-recipes", label: "Fall", group: "Occasion / Theme" },
+  { value: "spring-recipes", label: "Spring", group: "Occasion / Theme" },
+  { value: "party-food", label: "Party Food", group: "Occasion / Theme" },
+  {
+    value: "romantic-dinners",
+    label: "Romantic Dinners",
+    group: "Occasion / Theme",
+  },
+  { value: "meal-prep", label: "Meal Prep", group: "Occasion / Theme" },
 ];
 
 export default function NewRecipePage() {
@@ -291,60 +460,73 @@ export default function NewRecipePage() {
         <div>
           <label className="mb-1 block font-medium">Categories</label>
           <div className="flex flex-col gap-2">
-            <Command className="rounded-lg border shadow-md">
+            <Command className="rounded-lg border p-0 text-sm shadow-md">
               <CommandInput placeholder="Search categories..." />
               <CommandEmpty>No category found.</CommandEmpty>
-              <CommandGroup className="max-h-64 overflow-auto">
-                {CATEGORY_OPTIONS.map((category) => (
-                  <CommandItem
-                    key={category}
-                    onSelect={() => {
-                      setForm((prev) => ({
-                        ...prev,
-                        categories: prev.categories.includes(category)
-                          ? prev.categories.filter((c) => c !== category)
-                          : [...prev.categories, category],
-                      }));
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        form.categories.includes(category)
-                          ? "opacity-100"
-                          : "opacity-0",
-                      )}
-                    />
-                    {category}
-                  </CommandItem>
+              <div className="max-h-60 overflow-y-auto">
+                {Array.from(
+                  new Set(recipeCategories.map((cat) => cat.group)),
+                ).map((group) => (
+                  <CommandGroup key={group} heading={group} className="p-0">
+                    {recipeCategories
+                      .filter((cat) => cat.group === group)
+                      .map((cat) => (
+                        <CommandItem
+                          key={cat.value}
+                          className="px-2 py-1 text-sm"
+                          onSelect={() => {
+                            setForm((prev) => ({
+                              ...prev,
+                              categories: prev.categories.includes(cat.value)
+                                ? prev.categories.filter((c) => c !== cat.value)
+                                : [...prev.categories, cat.value],
+                            }));
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              form.categories.includes(cat.value)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
+                          {cat.label}
+                        </CommandItem>
+                      ))}
+                  </CommandGroup>
                 ))}
-              </CommandGroup>
+              </div>
             </Command>
             <div className="flex flex-wrap gap-2">
-              {form.categories.map((category) => (
-                <Badge
-                  key={category}
-                  variant="secondary"
-                  className="flex items-center gap-1"
-                >
-                  {category}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setForm((prev) => ({
-                        ...prev,
-                        categories: prev.categories.filter(
-                          (c) => c !== category,
-                        ),
-                      }));
-                    }}
-                    className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              {form.categories.map((catValue) => {
+                const cat = recipeCategories.find((c) => c.value === catValue);
+                if (!cat) return null;
+                return (
+                  <Badge
+                    key={cat.value}
+                    variant="secondary"
+                    className="flex items-center gap-1"
                   >
-                    <X className="h-3 w-3" />
-                    <span className="sr-only">Remove {category}</span>
-                  </button>
-                </Badge>
-              ))}
+                    {cat.label}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setForm((prev) => ({
+                          ...prev,
+                          categories: prev.categories.filter(
+                            (c) => c !== cat.value,
+                          ),
+                        }));
+                      }}
+                      className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    >
+                      <X className="h-3 w-3" />
+                      <span className="sr-only">Remove {cat.label}</span>
+                    </button>
+                  </Badge>
+                );
+              })}
             </div>
           </div>
           {fieldErrors.categories && (
