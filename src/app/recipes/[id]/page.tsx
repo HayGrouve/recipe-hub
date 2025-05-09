@@ -4,12 +4,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
-export default function RecipeDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const recipe = mockedRecipes.find((r) => r.id === Number(params.id));
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function RecipeDetailPage({ params }: Props) {
+  const resolvedParams = await params;
+  const recipe = mockedRecipes.find((r) => r.id === Number(resolvedParams.id));
 
   if (!recipe) {
     notFound();
