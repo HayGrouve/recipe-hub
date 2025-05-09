@@ -1,16 +1,14 @@
 import type React from "react";
-import { Search, Filter, XCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { recipeCategories } from "@/lib/recipeCategories";
 
 interface RecipesSidebarProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   selectedCategories: string[];
-  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
-  categories: string[];
+  setSelectedCategories: (categories: string[]) => void;
   toggleSidebarButton?: React.ReactNode;
 }
 
@@ -19,71 +17,78 @@ export function RecipesSidebar({
   setSearchTerm,
   selectedCategories,
   setSelectedCategories,
-  categories,
   toggleSidebarButton,
 }: RecipesSidebarProps) {
-  const handleCategoryChange = (category: string, checked: boolean) => {
-    setSelectedCategories((prev) =>
-      checked ? [...prev, category] : prev.filter((c) => c !== category),
-    );
-  };
-
-  const clearFilters = () => {
-    setSearchTerm("");
-    setSelectedCategories([]);
-  };
+  // Group categories by their group
+  const groupedCategories = recipeCategories.reduce(
+    (acc, category) => {
+      acc[category.group] ??= [];
+      acc[category.group]!.push(category);
+      return acc;
+    },
+    {} as Record<string, typeof recipeCategories>,
+  );
 
   return (
-    <div className="space-y-6">
-      {/* Search */}
+    <div className="flex h-full flex-col gap-4 p-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Filters</h2>
+        {toggleSidebarButton}
+      </div>
+
       <div className="space-y-2">
-        <h3 className="flex items-center space-x-2 text-lg font-semibold">
-          <Search className="h-5 w-5" />
-          <span>Search Recipes</span>
-          {toggleSidebarButton && (
-            <span className="ml-2">{toggleSidebarButton}</span>
-          )}
-        </h3>
+        <Label htmlFor="search">Search</Label>
         <Input
-          type="text"
-          placeholder="Search..."
+          id="search"
+          placeholder="Search recipes..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
-      {/* Categories */}
       <div className="space-y-2">
-        <h3 className="flex items-center space-x-2 text-lg font-semibold">
-          <Filter className="h-5 w-5" />
-          <span>Categories</span>
-        </h3>
-        <div className="space-y-2">
-          {categories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <Checkbox
-                id={category}
-                checked={selectedCategories.includes(category)}
-                onCheckedChange={(checked) =>
-                  handleCategoryChange(category, checked as boolean)
-                }
-              />
-              <Label
-                htmlFor={category}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                {category}
-              </Label>
-            </div>
-          ))}
-        </div>
+        <Label>Categories</Label>
+        <ScrollArea className="h-[calc(100vh-300px)]">
+          <div className="space-y-4">
+            {Object.entries(groupedCategories).map(([group, categories]) => (
+              <div key={group} className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  {group}
+                </h3>
+                <div className="space-y-1">
+                  {categories.map((category) => (
+                    <label
+                      key={category.value}
+                      className="flex items-center space-x-2"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(category.value)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedCategories([
+                              ...selectedCategories,
+                              category.value,
+                            ]);
+                          } else {
+                            setSelectedCategories(
+                              selectedCategories.filter(
+                                (c) => c !== category.value,
+                              ),
+                            );
+                          }
+                        }}
+                        className="h-4 w-4 rounded border-gray-300"
+                      />
+                      <span className="text-sm">{category.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
-
-      {/* Clear Filters */}
-      <Button onClick={clearFilters} variant="outline" className="w-full">
-        <XCircle className="mr-2 h-4 w-4" />
-        Clear All Filters
-      </Button>
     </div>
   );
 }

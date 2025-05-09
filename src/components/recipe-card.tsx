@@ -50,8 +50,10 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         {/* Recipe Content */}
         <CardHeader>
           <CardTitle>{recipe.title}</CardTitle>
-          <CardDescription className="line-clamp-2">
-            {recipe.description}
+          <CardDescription className="line-clamp-2 text-muted-foreground">
+            <div
+              dangerouslySetInnerHTML={{ __html: recipe.description ?? "" }}
+            />
           </CardDescription>
         </CardHeader>
 

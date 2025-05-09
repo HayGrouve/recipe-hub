@@ -1,10 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RecipesSidebar } from "@/components/recipes-sidebar";
 import { RecipeCard } from "@/components/recipe-card";
-import { mockedRecipes } from "@/lib/mockedData";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
+import { ChevronLeft, Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -12,14 +11,39 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
+import type { Recipe } from "@/lib/types";
 
 export default function RecipesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredRecipes = mockedRecipes.filter((recipe) => {
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch("/api/recipes");
+        if (!response.ok) {
+          throw new Error("Failed to fetch recipes");
+        }
+        const data = (await response.json()) as Recipe[];
+        setRecipes(data);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch recipes",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchRecipes();
+  }, []);
+
+  const filteredRecipes = recipes.filter((recipe) => {
     const matchesSearch = recipe.title
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -45,9 +69,6 @@ export default function RecipesPage() {
       setSearchTerm={setSearchTerm}
       selectedCategories={selectedCategories}
       setSelectedCategories={setSelectedCategories}
-      categories={Array.from(
-        new Set(mockedRecipes.flatMap((recipe) => recipe.categories || [])),
-      )}
       toggleSidebarButton={
         <Button
           variant="ghost"
@@ -63,38 +84,36 @@ export default function RecipesPage() {
     />
   );
 
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-lg text-muted-foreground">Loading recipes...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-lg text-red-500">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col">
       {/* Main Content Wrapper */}
-      <div className="flex flex-1 flex-row">
+      <div className="flex flex-1">
         {/* Desktop Sidebar */}
         <div
-          className={`hidden transition-all duration-200 ease-in-out md:block ${
-            isCollapsed
-              ? "pointer-events-none w-0 min-w-0 max-w-0 overflow-hidden opacity-0"
-              : "w-[300px]"
-          }`}
+          className={`hidden border-r bg-background md:block ${
+            isCollapsed ? "w-0" : "w-64"
+          } transition-all duration-300`}
         >
-          {!isCollapsed && (
-            <aside className="h-full overflow-hidden border-r bg-background p-4">
-              {sidebarContent}
-            </aside>
-          )}
+          {!isCollapsed && sidebarContent}
         </div>
-        {/* Show Sidebar Button (Desktop only, when collapsed) */}
-        {isCollapsed && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="fixed left-2 top-[110px] z-40 hidden items-center gap-1 rounded-full border bg-background shadow-md md:flex"
-            onClick={toggleSidebar}
-            tabIndex={0}
-          >
-            <ChevronRight className="h-4 w-4" />
-            <span className="text-sm font-normal">Show</span>
-          </Button>
-        )}
-        {/* Main Section */}
+
+        {/* Main Content */}
         <main
           className="flex-1 p-4"
           style={{ minHeight: "calc(100dvh - 165px)" }}
@@ -123,19 +142,12 @@ export default function RecipesPage() {
                     setSearchTerm={setSearchTerm}
                     selectedCategories={selectedCategories}
                     setSelectedCategories={setSelectedCategories}
-                    categories={Array.from(
-                      new Set(
-                        mockedRecipes.flatMap(
-                          (recipe) => recipe.categories || [],
-                        ),
-                      ),
-                    )}
-                    // No hide button in mobile drawer
                   />
                 </div>
               </SheetContent>
             </Sheet>
           </div>
+
           {filteredRecipes.length > 0 ? (
             <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredRecipes.map((recipe) => (

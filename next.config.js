@@ -17,6 +17,10 @@ const config = {
         hostname: "images.unsplash.com",
       },
     ],
+    domains: [
+      "cdn.loveandlemons.com",
+      // add any other domains you need here
+    ],
   },
 };
 

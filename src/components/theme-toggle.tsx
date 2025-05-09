@@ -23,9 +23,8 @@ export function ThemeToggle() {
           exit={{ y: 20, opacity: 0 }}
           transition={{
             type: "spring",
-            stiffness: 400,
-            damping: 17,
-            duration: 0.2,
+            stiffness: 700,
+            damping: 24,
           }}
           className="absolute inset-0 flex items-center justify-center"
         >
