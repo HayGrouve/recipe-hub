@@ -73,6 +73,38 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
     --card-hover-shadow: 0px 8px 15px rgba(31, 41, 55, 1);
   }
+  ul,
+  ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  ul {
+    list-style-type: disc;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+  li {
+    margin-bottom: 0.25rem;
+  }
+  .dark ul,
+  .dark ol {
+    color: hsl(var(--foreground));
+  }
+  .dark li {
+    color: hsl(var(--foreground));
+  }
+  /* Tiptap toolbar button dark mode fix */
+  .dark .tiptap-toolbar-btn,
+  .dark .tiptap-toolbar-btn:not(.bg-primary) {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+    border-color: hsl(var(--border));
+  }
+  .dark .tiptap-toolbar-btn.bg-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
 }
 @layer base {
   * {
@@ -81,4 +113,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #888;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }

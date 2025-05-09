@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import Link from "next/link";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,7 +37,7 @@ export function Navbar() {
     >
       <div className="flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
+        <Link href="/recipes" className="flex items-center space-x-2">
           <Image
             src="/logo.svg"
             alt="Logo"
@@ -47,12 +48,19 @@ export function Navbar() {
           <span className="text-lg font-semibold text-foreground">
             RecipeHub
           </span>
-        </div>
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden items-center space-x-4 sm:flex">
           {isSignedIn ? (
-            <UserButton />
+            <>
+              <Link href="/recipes/new">
+                <Button variant="secondary" className="font-medium">
+                  + Create Recipe
+                </Button>
+              </Link>
+              <UserButton />
+            </>
           ) : (
             <>
               <SignInButton mode="modal">
@@ -89,7 +97,14 @@ export function Navbar() {
       >
         <div className="flex flex-col items-end space-y-4 py-4">
           {isSignedIn ? (
-            <UserButton />
+            <>
+              <Link href="/recipes/new">
+                <Button variant="secondary" className="w-full font-medium">
+                  + Create Recipe
+                </Button>
+              </Link>
+              <UserButton />
+            </>
           ) : (
             <>
               <SignInButton mode="modal">
