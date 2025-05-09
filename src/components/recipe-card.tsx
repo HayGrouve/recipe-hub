@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import type { Recipe } from "@/lib/types";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -29,20 +30,22 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         boxShadow: "var(--card-hover-shadow)",
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="max-w-sm overflow-hidden rounded-xl"
+      className="mx-auto h-full w-full max-w-sm overflow-hidden rounded-xl"
     >
-      <Card className="h-full max-w-sm overflow-hidden">
+      <Card className="h-full w-full overflow-hidden">
         {/* Recipe Image */}
-        <div className="relative h-40 w-full">
-          <Image
-            src={recipe.imageUrl ?? "/recipe.jpg"}
-            alt={recipe.title || "Recipe Image"}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority={recipe.id === 1}
-          />
-        </div>
+        <Link href={`/recipes/${recipe.id}`} className="group block">
+          <div className="relative h-48 w-full">
+            <Image
+              src={recipe.imageUrl ?? "/recipe.jpg"}
+              alt={recipe.title || "Recipe Image"}
+              fill
+              className="object-cover transition duration-200 group-hover:brightness-90"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={recipe.id === 1}
+            />
+          </div>
+        </Link>
 
         {/* Recipe Content */}
         <CardHeader>
@@ -71,13 +74,15 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
         {/* Footer with Button */}
         <CardFooter>
-          <Button
-            variant="outline"
-            className="w-full"
-            aria-label={`View details for ${recipe.title}`}
-          >
-            View Recipe
-          </Button>
+          <Link href={`/recipes/${recipe.id}`} className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              aria-label={`View details for ${recipe.title}`}
+            >
+              View Recipe
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </motion.div>
